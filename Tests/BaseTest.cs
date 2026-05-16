@@ -1,4 +1,7 @@
+using BettySlotAutomation.Core.Interfaces;
 using BettySlotAutomation.Core.Utilities;
+using BettySlotAutomation.Enums;
+using BettySlotAutomation.Pages.SpinberryPage;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
@@ -7,20 +10,20 @@ namespace BettySlotAutomation.Tests;
 [TestFixture]
 public abstract class BaseTest
 {
-    protected IWebDriver Driver { get; private set; } = null!;
-    public SpinberryTests SpinberryTests;
+    protected IDriver _driver;
+    protected SpinberryPage SpinberryPage;
 
     [SetUp]
-    public void SetUp()
+    public void TestInit()
     {
-        Driver = DriverFactory.CreateDriver();
-        SpinberryTests = new SpinberryTests(Driver);
+        _driver = new DriverAdapter();
+        _driver.Start(BrowserType.CHROME);
+        SpinberryPage = new SpinberryPage(_driver);
     }
 
     [TearDown]
-    public void TearDown()
+    public void TestCleanup()
     {
-        Driver?.Quit();
-        Driver?.Dispose();
+        _driver.Quit();
     }
 }

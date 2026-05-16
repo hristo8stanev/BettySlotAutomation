@@ -1,23 +1,20 @@
-using BettySlotAutomation.Constants;
 using BettySlotAutomation.Core.Interfaces;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 
 namespace BettySlotAutomation.Core;
 
-public abstract partial class BasePage : IPage
+public abstract class BasePage
 {
-    protected readonly IWebDriver Driver;
-    protected readonly WebDriverWait Wait;
+    protected readonly IDriver Driver;
 
-    protected BasePage(IWebDriver driver)
+    protected BasePage(IDriver driver)
     {
         Driver = driver;
-        Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(BrowserConstants.DefaultTimeoutSeconds));
     }
 
-    public virtual void WaitForPageToLoad()
+    public abstract string Url { get; }
+
+    public void Navigate()
     {
-        Wait.Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
+        Driver.GoToUrl(Url);
     }
 }
