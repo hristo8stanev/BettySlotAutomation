@@ -2,11 +2,14 @@ namespace BettySlotAutomation.Enums;
 
 public enum BrowserType
 {
-    CHROME,
-    CHROME_HEADLESS,
-    FIREFOX,
-    FIREFOX_HEADLESS,
-    EDGE,
-    EDGE_HEADLESS,
-    SAFARI
+    Chrome,
+    ChromeHeadless,
+    Firefox,
+    FirefoxHeadless,
+    Edge,
+    EdgeHeadless,
+    Safari,
+    ChromeMobileIphone14ProMax,
+    ChromeMobileSamsungS20,
+    ChromeMobileIpadPro
 }

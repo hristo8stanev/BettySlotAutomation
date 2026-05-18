@@ -1,29 +1,50 @@
 using BettySlotAutomation.Core.Interfaces;
 using BettySlotAutomation.Core.Utilities;
 using BettySlotAutomation.Enums;
+using BettySlotAutomation.Pages.IrishWildsPage;
 using BettySlotAutomation.Pages.SpinberryPage;
 using NUnit.Framework;
-using OpenQA.Selenium;
 
 namespace BettySlotAutomation.Tests;
 
-[TestFixture]
 public abstract class BaseTest
 {
+    private readonly BrowserType _browserType;
     protected IDriver _driver;
     protected SpinberryPage SpinberryPage;
+    protected IrishWildsPage IrishWildsPage;
+
+    protected BaseTest(BrowserType browserType)
+    {
+        _browserType = browserType;
+    }
+
+    protected virtual void SelectGame(){}
 
     [SetUp]
     public void TestInit()
     {
+        Logger.Info($"TEST STARTED: {TestContext.CurrentContext.Test.Name} [{_browserType}]");
+
         _driver = new DriverAdapter();
-        _driver.Start(BrowserType.CHROME);
+        _driver.Start(_browserType);
         SpinberryPage = new SpinberryPage(_driver);
+        IrishWildsPage = new IrishWildsPage(_driver);
+        SpinberryPage.Navigate();
+        _driver.AcceptCookies();
     }
 
     [TearDown]
     public void TestCleanup()
     {
+        var result = TestContext.CurrentContext.Result.Outcome.Status;
+        var testName = TestContext.CurrentContext.Test.Name;
+
+        if (result == NUnit.Framework.Interfaces.TestStatus.Passed)
+            Logger.Info($"TEST PASSED: {testName}");
+        else
+            Logger.Error($"TEST FAILED: {testName} — {TestContext.CurrentContext.Result.Message}");
+
         _driver.Quit();
     }
 }

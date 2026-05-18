@@ -1,7 +1,5 @@
 using BettySlotAutomation.Core;
 using BettySlotAutomation.Core.Interfaces;
-using Newtonsoft.Json.Bson;
-using OpenQA.Selenium;
 
 namespace BettySlotAutomation.Pages.SpinberryPage;
 
@@ -13,8 +11,18 @@ public partial class SpinberryPage : BasePage
 
     public override string Url => Urls.SpinberryUrls.BaseUrl;
 
-    public void AcceptCookies()
+    public void SelectGame(string game)
     {
-        AggreeCookiesButton.Click();
+        PlayGame(game).Hover();
+        PlayGame(game).Click(true);
+    }
+
+    public void SelectGameOnMobile(string game)
+    {
+        PrevSlideButton().Hover();
+        while (CurrentGameTitle().Text != game)
+            PrevSlideButton().Click();
+
+        PlayGameMobile().Click();
     }
 }
