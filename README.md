@@ -197,6 +197,19 @@ You can also trigger the pipeline at any time without pushing code:
 
 This is useful when you want to run the full suite on demand.
 
+### On Demand Tests by Tag
+
+When triggering manually, you can optionally filter which tests to run by entering a tag in the **tag** input field:
+
+| Tag | Tests that will run |
+|---|---|
+| *(empty)* | All tests |
+| `spinberry` | Spinberry desktop + mobile |
+| `irishWilds` | Irish Wilds desktop + mobile |
+| `mobile` | All mobile tests |
+
+Leave the tag field empty to run the full suite.
+
 ---
 
 ## 📊 Allure Report
