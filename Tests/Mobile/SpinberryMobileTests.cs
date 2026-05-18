@@ -5,6 +5,8 @@ using NUnit.Framework;
 namespace BettySlotAutomation.Tests.Mobile;
 
 [TestFixture(BrowserType.ChromeMobileSamsungS20)]
+[Category(TestCategories.Spinberry)]
+[Category(TestCategories.Mobile)]
 public class SpinberryMobileTests : BaseTest
 {
     public SpinberryMobileTests(BrowserType browserType) : base(browserType) { }

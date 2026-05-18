@@ -5,6 +5,8 @@ using NUnit.Framework;
 namespace BettySlotAutomation.Tests.Mobile;
 
 [TestFixture(BrowserType.ChromeMobileIphone14ProMax)]
+[Category(TestCategories.IrishWilds)]
+[Category(TestCategories.Mobile)]
 public class IrishWildsMobileTests : BaseTest
 {
     public IrishWildsMobileTests(BrowserType browserType) : base(browserType) { }

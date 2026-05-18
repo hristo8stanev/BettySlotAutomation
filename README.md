@@ -184,7 +184,7 @@ The framework follows the **Page Object Model (POM)** pattern. Each page is spli
 
 ## ⚙️ CI/CD — GitHub Actions
 
-The suite runs automatically on every push and pull request to `master` via GitHub Actions.
+The suite runs automatically every night at **03:00 Sofia time** (00:00 UTC) via GitHub Actions, and also on every push and pull request to `master`.
 
 ### Trigger Manually
 

@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace BettySlotAutomation.Tests.Desktop;
 
 [TestFixture(BrowserType.Chrome)]
+[Category(TestCategories.IrishWilds)]
 public class IrishWildsTests : BaseTest
 {
     public IrishWildsTests(BrowserType browserType) : base(browserType) { }

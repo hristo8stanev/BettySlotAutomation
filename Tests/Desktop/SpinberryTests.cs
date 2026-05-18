@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace BettySlotAutomation.Tests.Desktop;
 
 [TestFixture(BrowserType.Chrome)]
+[Category(TestCategories.Spinberry)]
 public class SpinberryTests : BaseTest
 {
     public SpinberryTests(BrowserType browserType) : base(browserType) { }

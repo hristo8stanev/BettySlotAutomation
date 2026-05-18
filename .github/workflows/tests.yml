@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Test category to run (spinberry, irishWilds, mobile). Leave empty to run all tests.'
+        required: false
+        default: ''
+  schedule:
+    - cron: '0 0 * * *'  # 03:00 Sofia time (UTC+3 summer / EEST)
 
 jobs:
   desktop-tests:
@@ -155,3 +162,45 @@ jobs:
           publish_dir: ./allure-report
           publish_branch: gh-pages
           keep_files: false
+
+  on-demand-tests:
+    name: On Demand Tests by Tag
+    runs-on: windows-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run Tests by Tag
+        run: |
+          if ("${{ inputs.tag }}" -ne "") {
+            dotnet test --no-build --configuration Release --filter "TestCategory=${{ inputs.tag }}" --logger "trx;LogFileName=ondemand-results.trx" --results-directory ./test-results
+          } else {
+            dotnet test --no-build --configuration Release --logger "trx;LogFileName=ondemand-results.trx" --results-directory ./test-results
+          }
+
+      - name: Upload On Demand Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ondemand-test-results
+          path: ./test-results/ondemand-results.trx
+
+      - name: Upload On Demand Allure Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-ondemand
+          path: '**/bin/Release/net10.0/allure-results/**'
