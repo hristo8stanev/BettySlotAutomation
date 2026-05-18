@@ -102,8 +102,7 @@ jobs:
       - name: Merge Allure Results
         run: |
           mkdir -p merged-results
-          cp -r allure-results/desktop/* merged-results/ 2>/dev/null || true
-          cp -r allure-results/mobile/* merged-results/ 2>/dev/null || true
+          find allure-results -name "*.json" -o -name "*.xml" | xargs -I {} cp {} merged-results/ 2>/dev/null || true
           echo "Merged results:"
           ls -la merged-results/
 
