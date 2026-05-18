@@ -42,7 +42,7 @@ jobs:
         if: always()
         with:
           name: allure-results-desktop
-          path: allure-results/
+          path: '**/allure-results/**'
 
   mobile-tests:
     name: Mobile Tests
