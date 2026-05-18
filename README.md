@@ -199,16 +199,22 @@ This is useful when you want to run the full suite on demand.
 
 ### On Demand Tests by Tag
 
-When triggering manually, you can optionally filter which tests to run by entering a tag in the **tag** input field:
+The **On Demand Tests** workflow has a separate trigger with a dropdown to select which category to run:
 
-| Tag | Tests that will run |
+1. Go to your GitHub repo
+2. Click the **Actions** tab
+3. Select **On Demand Tests**
+4. Click **Run workflow** — a dropdown appears with the options below
+5. Select a category and click **Run workflow**
+
+| Option | Tests that will run |
 |---|---|
-| *(empty)* | All tests |
-| `spinberry` | Spinberry desktop + mobile |
+| `all` *(default)* | All tests |
 | `irishWilds` | Irish Wilds desktop + mobile |
+| `spinberry` | Spinberry desktop + mobile |
 | `mobile` | All mobile tests |
 
-Leave the tag field empty to run the full suite.
+After the run, the Allure report is automatically published to GitHub Pages.
 
 ---
 

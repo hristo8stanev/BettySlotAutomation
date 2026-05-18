@@ -6,9 +6,10 @@ on:
       tag:
         description: 'Select test category to run'
         required: true
-        default: 'irishWilds'
+        default: 'all'
         type: choice
         options:
+          - all
           - irishWilds
           - spinberry
           - mobile
@@ -34,7 +35,12 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run Tests by Tag
-        run: dotnet test --no-build --configuration Release --filter "TestCategory=${{ inputs.tag }}" --logger "trx;LogFileName=ondemand-results.trx" --results-directory ./test-results
+        run: |
+          if ("${{ inputs.tag }}" -eq "all") {
+            dotnet test --no-build --configuration Release --logger "trx;LogFileName=ondemand-results.trx" --results-directory ./test-results
+          } else {
+            dotnet test --no-build --configuration Release --filter "TestCategory=${{ inputs.tag }}" --logger "trx;LogFileName=ondemand-results.trx" --results-directory ./test-results
+          }
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
