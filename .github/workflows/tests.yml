@@ -1,0 +1,67 @@
+name: Slot Automation Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  desktop-tests:
+    name: Desktop Tests
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run Desktop Tests
+        run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~Tests.Desktop" --logger "trx;LogFileName=desktop-results.trx" --results-directory ./test-results
+
+      - name: Upload Desktop Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: desktop-test-results
+          path: ./test-results/desktop-results.trx
+
+  mobile-tests:
+    name: Mobile Tests
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run Mobile Tests
+        run: dotnet test --no-build --configuration Release --filter "FullyQualifiedName~Tests.Mobile" --logger "trx;LogFileName=mobile-results.trx" --results-directory ./test-results
+
+      - name: Upload Mobile Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-test-results
+          path: ./test-results/mobile-results.trx
