@@ -182,11 +182,51 @@ The framework follows the **Page Object Model (POM)** pattern. Each page is spli
 
 ---
 
-## Adding a New Game
+## ⚙️ CI/CD — GitHub Actions
 
-1. Create a folder under `Pages/` (e.g. `Pages/NewGamePage/`)
-2. Add partial class files: `NewGamePage.cs`, `NewGamePage.Maps.cs`, `NewGamePage.Assertions.cs`
-3. Add feature-specific files as needed (e.g. `NewGamePage.AutoPlay.Maps.cs`)
-4. Register the page in `BaseTest.cs`
-5. Add the game name constant to `Constants/Games.cs`
-6. Create test files under `Tests/Desktop/` and `Tests/Mobile/`
+The suite runs automatically on every push and pull request to `master` via GitHub Actions.
+
+### Trigger Manually
+
+You can also trigger the pipeline at any time without pushing code:
+
+1. Go to your GitHub repo
+2. Click the **Actions** tab
+3. Select **Slot Automation Tests**
+4. Click **Run workflow** → **Run workflow**
+
+This is useful when you want to run the full suite on demand.
+
+---
+
+## 📊 Allure Report
+
+After every pipeline run (push, PR, or manual), an Allure report is automatically generated and deployed to GitHub Pages.
+
+**View the latest report:** 🔗 https://hristo8stanev.github.io/BettySlotAutomation/
+
+To open it from the repo:
+
+1. Go to the repository **main page** on GitHub
+2. On the right side, click **Deployments**
+3. Click the latest **github-pages** entry
+
+The report shows:
+
+- ✅ Passed / ❌ Failed / ⏭️ Skipped summary
+- Test duration and history trends
+- Detailed test steps per desktop and mobile run
+
+**How it works:**
+
+Desktop & Mobile tests run in parallel → Allure results are merged → Report deployed to `gh-pages` → Available at the link above.
+
+Every new run overwrites the previous report with the latest results. You never need to touch the `gh-pages` branch manually — it is updated automatically.
+
+---
+
+## 👤 Author
+
+**xhristov** ⚡ Automation Engineer | *If it can be done, it can be automated.*
+
+---
