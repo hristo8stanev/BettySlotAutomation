@@ -42,7 +42,7 @@ jobs:
         if: always()
         with:
           name: allure-results-desktop
-          path: '**/allure-results/**'  # ← search everywhere not just root
+          path: '**/bin/Release/net10.0/allure-results/**'
 
   mobile-tests:
     name: Mobile Tests
@@ -78,7 +78,7 @@ jobs:
         if: always()
         with:
           name: allure-results-mobile
-          path: '**/allure-results/**'
+          path: '**/bin/Release/net10.0/allure-results/**'
 
   report:
     name: Generate Allure Report
