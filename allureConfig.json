@@ -1,6 +1,7 @@
 {
   "allure": {
     "directory": "allure-results",
-    "title": "Betty Slot Automation"
+    "links": [],
+    "enableParameters": true
   }
 }

@@ -1,3 +1,4 @@
+using Allure.NUnit;
 using BettySlotAutomation.Core.Interfaces;
 using BettySlotAutomation.Core.Utilities;
 using BettySlotAutomation.Enums;
@@ -7,6 +8,7 @@ using NUnit.Framework;
 
 namespace BettySlotAutomation.Tests;
 
+[AllureNUnit]
 public abstract class BaseTest
 {
     private readonly BrowserType _browserType;
