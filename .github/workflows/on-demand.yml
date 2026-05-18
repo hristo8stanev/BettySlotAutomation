@@ -1,0 +1,102 @@
+name: On Demand Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Select test category to run'
+        required: true
+        default: 'irishWilds'
+        type: choice
+        options:
+          - irishWilds
+          - spinberry
+          - mobile
+
+jobs:
+  on-demand-tests:
+    name: Run Tests - ${{ inputs.tag }}
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run Tests by Tag
+        run: dotnet test --no-build --configuration Release --filter "TestCategory=${{ inputs.tag }}" --logger "trx;LogFileName=ondemand-results.trx" --results-directory ./test-results
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ondemand-results-${{ inputs.tag }}
+          path: ./test-results/ondemand-results.trx
+
+      - name: Upload Allure Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-ondemand
+          path: '**/bin/Release/net10.0/allure-results/**'
+
+  on-demand-report:
+    name: Generate & Publish Report
+    runs-on: ubuntu-latest
+    needs: [ on-demand-tests ]
+    if: always()
+
+    permissions:
+      contents: write
+      pages: write
+
+    steps:
+      - name: Download Allure Results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-ondemand
+          path: allure-results
+
+      - name: Merge Allure Results
+        run: |
+          mkdir -p merged-results
+          find allure-results -name "*.json" -o -name "*.xml" | xargs -I {} cp {} merged-results/ 2>/dev/null || true
+          echo "Merged results:"
+          ls -la merged-results/
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Install Allure CLI
+        run: |
+          curl -o allure.tgz -L https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.tgz
+          tar -xzf allure.tgz
+          sudo mv allure-2.30.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
+
+      - name: Generate Allure Report
+        run: allure generate merged-results --clean -o allure-report
+
+      - name: Add .nojekyll file
+        run: touch allure-report/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
+          keep_files: false
