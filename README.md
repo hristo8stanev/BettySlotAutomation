@@ -24,6 +24,35 @@ End-to-end test automation framework for the [Spinberry](https://www.spinberry.c
 
 ---
 
+## Configuration
+
+All environment settings live in `appsettings.json` at the project root:
+
+```json
+{
+  "TestSettings": {
+    "BaseUrl": "https://www.spinberry.com/",
+    "Browser": ""
+  }
+}
+```
+
+| Key | Description | Example |
+|---|---|---|
+| `BaseUrl` | Target environment URL | `https://staging.spinberry.com/` |
+| `Browser` | Override browser for all tests. Leave empty to use the browser defined in `[TestFixture]` | `ChromeHeadless` |
+
+Environment variables take priority over `appsettings.json` and use `__` as separator:
+
+```bash
+TestSettings__BaseUrl=https://staging.spinberry.com/
+TestSettings__Browser=ChromeHeadless
+```
+
+This is how CI/CD pipelines can point tests at a different environment without changing any files.
+
+---
+
 ## Getting Started
 
 ```bash
@@ -63,6 +92,8 @@ BettySlotAutomation/
 │
 ├── Core/
 │   ├── BasePage.cs                # Abstract base class for all page objects
+│   ├── Configuration/
+│   │   └── TestConfiguration.cs  # Loads appsettings.json + env var overrides
 │   ├── Interfaces/
 │   │   ├── IDriver.cs             # Browser driver abstraction
 │   │   └── IComponent.cs         # Web element abstraction
@@ -104,8 +135,7 @@ BettySlotAutomation/
 │       ├── SpinberryMobileTests.cs      # Spinberry homepage tests (Samsung Galaxy S20 Ultra)
 │       └── IrishWildsMobileTests.cs     # Irish Wilds game tests (iPhone 14 Pro Max)
 │
-└── Urls/
-    └── SpinberryUrls.cs           # Base URL constant
+└── appsettings.json               # Environment configuration (BaseUrl, Browser override)
 ```
 
 ---

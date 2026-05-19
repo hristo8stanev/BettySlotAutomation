@@ -1,4 +1,5 @@
 using BettySlotAutomation.Core;
+using BettySlotAutomation.Core.Configuration;
 using BettySlotAutomation.Core.Interfaces;
 
 namespace BettySlotAutomation.Pages.SpinberryPage;
@@ -9,7 +10,7 @@ public partial class SpinberryPage : BasePage
     {
     }
 
-    public override string Url => Urls.SpinberryUrls.BaseUrl;
+    public override string Url => TestConfiguration.BaseUrl;
 
     public void SelectGame(string game)
     {

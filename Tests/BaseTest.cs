@@ -1,4 +1,5 @@
 using Allure.NUnit;
+using BettySlotAutomation.Core.Configuration;
 using BettySlotAutomation.Core.Interfaces;
 using BettySlotAutomation.Core.Utilities;
 using BettySlotAutomation.Enums;
@@ -26,10 +27,12 @@ public abstract class BaseTest
     [SetUp]
     public void TestInit()
     {
-        Logger.Info($"TEST STARTED: {TestContext.CurrentContext.Test.Name} [{_browserType}]");
+        var browser = TestConfiguration.BrowserOverride ?? _browserType;
+
+        Logger.Info($"TEST STARTED: {TestContext.CurrentContext.Test.Name} [{browser}]");
 
         _driver = new DriverAdapter();
-        _driver.Start(_browserType);
+        _driver.Start(browser);
         SpinberryPage = new SpinberryPage(_driver);
         IrishWildsPage = new IrishWildsPage(_driver);
         SpinberryPage.Navigate();
