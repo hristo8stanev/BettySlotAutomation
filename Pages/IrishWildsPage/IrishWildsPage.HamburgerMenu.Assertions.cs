@@ -18,9 +18,10 @@ public partial class IrishWildsPage
         return this;
     }
 
-    public void AssertDesktopHamburgerMenuElementsAreDisplayed()
+    public IrishWildsPage AssertDesktopHamburgerMenuElementsAreDisplayed()
     {
         AssertDefaultHamburgerMenuElementsAreDisplayed();
         Assert.That(FullScreenButton().Displayed, Is.True, "Full screen button is not displayed");
+        return this;
     }
 }

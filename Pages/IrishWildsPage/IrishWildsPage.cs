@@ -9,7 +9,7 @@ public partial class IrishWildsPage : BasePage
     {
     }
 
-    public override string Url => throw new NotImplementedException();
+    public override string Url => string.Empty;
 
     public void StartGame() => PlayButton().Click();
 

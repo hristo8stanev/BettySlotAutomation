@@ -5,7 +5,7 @@ namespace BettySlotAutomation.Core.Interfaces
 {
     public interface IDriver
     {
-        public abstract string Url { get; }
+        public string Url { get; }
         public string Title { get; }
         public void Start(BrowserType browser);
         public void Refresh();

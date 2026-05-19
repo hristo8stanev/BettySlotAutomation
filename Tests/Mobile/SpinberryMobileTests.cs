@@ -14,15 +14,15 @@ public class SpinberryMobileTests : BaseTest
     [Test]
     public void SpinberryPageSucceededLoaded_When_NavigatingToHomePage()
     {
-        var ExpectedTitle = "Spinberry - Creators of new to market land-based & online gambling games";
+        var expectedTitle = "Spinberry - Creators of new to market land-based & online gambling games";
 
-        SpinberryPage.AssertPageTitleIsCorrect(ExpectedTitle);
+        SpinberryPage.AssertPageTitleIsCorrect(expectedTitle);
     }
 
     [Test]
     public void SelectedGameSuccessfullyLoaded_When_SelectingGame()
     {
-        var game = Games.MINIMUM_10X;
+        var game = Games.Minimum10X;
 
         SpinberryPage.PlayGame(game).Hover();
 
